@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Company Page</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <h1>Company Information</h1>
+        </div>
+    </header>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <section class="company-info">
+            <h2>Company Name: {{ company_name }}</h2>
+            <p>This is where you can display information related to the selected company.</p>
+        </section>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p></p>
+    </footer>
+</body>
+</html>

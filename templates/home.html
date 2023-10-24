@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Home Page</title>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="header-container">
+            <h1>Welcome to Your Financial Analysis Website</h1>
+        </div>
+    </header>
+
+    <!-- Search Bar Section (below the main header) -->
+    <section class="search">
+        <form action="{{ url_for('company') }}" method="get">
+            <input type="text" name="company_name" placeholder="Enter a company name">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <!-- Main Content Section -->
+    <div class="container">
+        <section class="graphs">
+            <!-- Sensex and Nifty Graphs Placeholder -->
+            <div class="graph-placeholder">
+                <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Graph Placeholder">
+            </div>
+        </section>
+    </div>
+
+    <!-- Upload CSV Section -->
+    <section class="csv-upload">
+        <h2>Upload a CSV File</h2>
+        <p>Upload a CSV file to visualize company data.</p>
+        <input type="file" accept=".csv">
+        <button>Upload</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p></p>
+    </footer>
+</body>
+</html>
