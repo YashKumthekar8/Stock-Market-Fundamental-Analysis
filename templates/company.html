@@ -16,7 +16,15 @@
     <div class="container">
         <section class="company-info">
             <h2>Company Name: {{ company_name }}</h2>
-            <p>This is where you can display information related to the selected company.</p>
+            <p>This is where you can display information related to the selected company.
+
+
+
+                
+            </p>
+            
+            <!-- Add a link/button to go back to the home page -->
+            <a href="{{ url_for('home') }}" class="back-button">Home</a>
         </section>
     </div>
 
