@@ -55,3 +55,4 @@ def bar_graphs(file, company, x_col, y_col):
 
 def indicator(value):
     fig = go.Figure(go.Indicator(mode="gauge+number", value=value, title={'text': 'Fundamental Health'}, domain={'x': [0, 1], 'y': [0, 1]}))
+

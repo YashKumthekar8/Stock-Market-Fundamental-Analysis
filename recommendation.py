@@ -30,13 +30,13 @@ def financial_ratios(ticker):
 
     counts = []
 
-    earnings_per_share = financial_statement['Net profit'] / balance_sheet['Equity Share Capital']
+    earnings_per_share = financial_statement[' Net Profit '] / balance_sheet['Equity Share Capital']
     counts.append(counter_increase(earnings_per_share[0], earnings_per_share))
 
-    debt_to_equity_ratio = balance_sheet['Total Liabilities'] / balance_sheet['Equity Share Capital']
+    debt_to_equity_ratio = balance_sheet[' Other Liabilities '] / balance_sheet[' No. of Equity Shares ']
     counts.append(counter_decrease(debt_to_equity_ratio[0], debt_to_equity_ratio))
 
-    return_on_equity = financial_statement['Net profit'] / balance_sheet['Equity Share Capital']
+    return_on_equity = financial_statement[' Net Profit '] / balance_sheet[' No. of Equity Shares ']
     counts.append(counter_increase(return_on_equity[0], return_on_equity))
 
     return counts
@@ -46,7 +46,7 @@ def income_statement_analysis(ticker):
     files = f'data/{ticker}_Income_Statement.csv'
     financial_statement = pd.read_csv(files)
 
-    indices = ['Sales', 'Profit before tax']
+    indices = [' Sales ', ' Profit before tax ']
     counts = []
     for i in range(0, 2):
         count = 0
@@ -64,8 +64,8 @@ def income_statement_analysis(ticker):
 def cash_flow_analysis(ticker):
     files = f'data/{ticker}_Cash_Flow.csv'
     cash_flow_statement = pd.read_csv(files)
-    indices = ['Cash from Operating Activity', 'Dividend Amount', 'Cash from Financing Activity']
-    cash_flow_statement['Dividend Amount'].fillna(0, inplace=True)
+    indices = [' Cash from Operating Activity ', ' Dividend Amount ', ' Cash from Financing Activity ']
+    cash_flow_statement[' Dividend Amount '].fillna(0, inplace=True)
     counts = []
     for i in range(0, 3):
         if(i != 2):
