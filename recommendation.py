@@ -6,7 +6,7 @@ from datetime import datetime
 def counter_increase(val_before, values):
     count = 0
     for value in values:
-        if value < val_before:
+        if value > val_before:
             count += 1
         val_before = value
 
@@ -16,7 +16,7 @@ def counter_increase(val_before, values):
 def counter_decrease(val_before, values):
     count = 0
     for value in values:
-        if value > val_before:
+        if value < val_before:
             count += 1
         val_before = value
 
@@ -28,9 +28,17 @@ def financial_ratios(ticker):
     financial_statement = pd.read_csv(files[0])
     balance_sheet = pd.read_csv(files[1])
 
+    for col in financial_statement.columns:
+        if col[0] != ' ':
+            financial_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
+    for col in balance_sheet.columns:
+        if col[0] != ' ':
+            balance_sheet.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
     counts = []
 
-    earnings_per_share = financial_statement[' Net Profit '] / balance_sheet['Equity Share Capital']
+    earnings_per_share = financial_statement[' Net Profit '] / balance_sheet[' Equity Share Capital ']
     counts.append(counter_increase(earnings_per_share[0], earnings_per_share))
 
     debt_to_equity_ratio = balance_sheet[' Other Liabilities '] / balance_sheet[' No. of Equity Shares ']
@@ -45,6 +53,10 @@ def financial_ratios(ticker):
 def income_statement_analysis(ticker):
     files = f'data/{ticker}_Income_Statement.csv'
     financial_statement = pd.read_csv(files)
+
+    for col in financial_statement.columns:
+        if col[0] != ' ':
+            financial_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
     indices = [' Sales ', ' Profit before tax ']
     counts = []
@@ -64,6 +76,11 @@ def income_statement_analysis(ticker):
 def cash_flow_analysis(ticker):
     files = f'data/{ticker}_Cash_Flow.csv'
     cash_flow_statement = pd.read_csv(files)
+
+    for col in cash_flow_statement.columns:
+        if col[0] != ' ':
+            cash_flow_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
     indices = [' Cash from Operating Activity ', ' Dividend Amount ', ' Cash from Financing Activity ']
     cash_flow_statement[' Dividend Amount '].fillna(0, inplace=True)
     counts = []
@@ -141,12 +158,12 @@ def recommend(ticker):
     return points
 
 
-print('Reliance : ', recommend('RELIANCE'))
-print('ICICI : ', recommend('ICICI'))
-print('HDFC : ', recommend('HDFC'))
-print('SBI : ', recommend('SBI'))
-print('TCS : ', recommend('TCS'))
-print('Infosys : ', recommend('INFY'))
-print('Mahindra & Mahindra : ', recommend('M&M'))
-print('Tech Mahindra : ', recommend('TECHM'))
-print('Tata Motors : ', recommend('TATAMOTORS'))
+# print('Reliance : ', recommend('RELIANCE'))
+# print('ICICI : ', recommend('ICICI'))
+# print('HDFC : ', recommend('HDFC'))
+# print('SBI : ', recommend('SBI'))
+# print('TCS : ', recommend('TCS'))
+# print('Infosys : ', recommend('INFY'))
+# print('Mahindra & Mahindra : ', recommend('M&M'))
+# print('Tech Mahindra : ', recommend('TECHM'))
+# print('Tata Motors : ', recommend('TATAMOTORS'))

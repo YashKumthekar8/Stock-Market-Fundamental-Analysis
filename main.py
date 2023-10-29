@@ -15,12 +15,24 @@ def home():
 @app.route('/company')
 def company():
     # trading_view chart of company for its share price value if possible
-    company_name = 'INFY'
+    company_name = 'AdaniEnterp'
     income_statement, balance_sheet, cash_flow = fetch_data(company_name)
     graphs = []
     income_statement_cols = [' Profit before tax ', ' Net Profit ', ' Sales ']
     balance_sheet_cols = [' Other Assets ', ' Other Liabilities ', ' Reserves ']
     x = ' Report Date '
+
+    for col in income_statement.columns:
+        if col[0] != ' ':
+            income_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
+    for col in balance_sheet.columns:
+        if col[0] != ' ':
+            balance_sheet.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
+    for col in cash_flow.columns:
+        if col[0] != ' ':
+            cash_flow.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
     columns = [' Net Profit ', ' Dividend Amount ', ' Sales ', ' Profit before tax ', ' Equity Share Capital ', 
     ' Other Liabilities ', ' No. of Equity Shares ', ' Other Assets ', ' Reserves ', ' Investments ', ' Cash & Bank ']
@@ -59,12 +71,22 @@ def company():
 
 @app.route("/dashboard")
 def dashboard():
-    company_name = 'INFY'
+
+    company_name = 'AdaniEnterp'
     income_statement, balance_sheet, cash_flow = fetch_data(company_name)
     graphs = []
     income_statement_cols = [' Profit before tax ', ' Net Profit ', ' Sales ']
     balance_sheet_cols = [' Other Assets ', ' Other Liabilities ', ' Reserves ']
     x = ' Report Date '
+
+    for col in df.columns:
+        income_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
+    for col in df.columns:
+        balance_sheet.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+
+    for col in df.columns:
+        cash_flow.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
     columns = [' Net Profit ', ' Dividend Amount ', ' Sales ', ' Profit before tax ', ' Equity Share Capital ', 
     ' Other Liabilities ', ' No. of Equity Shares ', ' Other Assets ', ' Reserves ', ' Investments ', ' Cash & Bank ']
@@ -102,9 +124,9 @@ def dashboard():
 
 
 def fetch_data(company_name):
-    income_statement = pd.read_csv(f'{company_name}_Income_Statement.csv')
-    balance_sheet = pd.read_csv(f'{company_name}_Balance_Sheet.csv')
-    cash_flow = pd.read_csv(f'{company_name}_Cash_Flow.csv')
+    income_statement = pd.read_csv(f'data/{company_name}_Income_Statement.csv')
+    balance_sheet = pd.read_csv(f'data/{company_name}_Balance_Sheet.csv')
+    cash_flow = pd.read_csv(f'data/{company_name}_Cash_Flow.csv')
     
     return income_statement, balance_sheet, cash_flow
 
@@ -182,22 +204,18 @@ def bar_graphs(file, company, x_col, y_col):
 
 
 def indicator(value):
-    limit = 100
+    limit = 80
 
     fig = go.Figure()
 
     fig.add_trace(go.Indicator(
         mode="gauge+number",
         value=value,
-        title="Current Value",
+        title="Fundamental Health Of Company",
         gauge={'axis': {'range': [None, limit]},
             'threshold': {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': limit}},
-        domain={'x': [0, 1], 'y': [0, 1]}, title='Fundamental Health Of Company'
+        domain={'x': [0, 1], 'y': [0, 1]}
     ))
-
-    fig.update_layout(
-        title_text="Indicator with Gauge and Number",
-    )
 
     return fig.to_html()
 
