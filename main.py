@@ -66,7 +66,7 @@ def company():
     score = rd.recommend(company_name)
     graphs.append(indicator(score))
 
-    return render_template('company.html', graphs=graphs)
+    return render_template('company.html', graphs=graphs, company_name=company_name)
 
 
 @app.route("/dashboard")
@@ -154,7 +154,7 @@ def line_graph_ratios(income_statement, company, ratio, ratio_name):
 
 
 def line_graph_income_stmnt(income_statement, balance_sheet):
-    fig = make_subplots(rows=2, cols=2, subplot_titles=("Total Revenue", "Assets V/S Liabilities"))
+    fig = make_subplots(rows=1, cols=2, subplot_titles=("Total Revenue", "Assets V/S Liabilities"))
 
     fig.add_trace(
         go.Line(x=income_statement[' Report Date '], y=income_statement[' Profit before tax ']),
@@ -175,7 +175,6 @@ def line_graph_income_stmnt(income_statement, balance_sheet):
     )
 
     # fig = px.line(file, x=' Report Date ', y=' Profit before tax ', title='Total Revenue', markers=True)
-
     return fig.to_html()
 
 

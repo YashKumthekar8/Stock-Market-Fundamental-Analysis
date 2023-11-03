@@ -48,7 +48,6 @@ body {
 /* Styles for search section */
 .search {
     text-align: center;
-    margin-top: 20px;
 }
 
 .search form {
@@ -90,11 +89,11 @@ body {
     margin-top: 5px;
 }
 
-.csv-upload input[type="file"] {
+/* .csv-upload input[type="file"] {
     display: none;
-}
+} */
 
-.csv-upload label {
+/* .csv-upload label {
     padding: 10px 20px;
     background-color: #333;
     color: #fff;
@@ -103,7 +102,7 @@ body {
     cursor: pointer;
     display: inline-block;
     font-size: 16px;
-}
+} */
 
 /* Footer styling */
 .footer {
