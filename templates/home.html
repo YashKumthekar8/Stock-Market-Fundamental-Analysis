@@ -37,8 +37,10 @@
             <h2>Upload a CSV File</h2>
             <p>Upload a CSV file to visualize company data.</p>
             <div class="input-group mb-3 w-25 mx-auto">
-                <input class="form-control" type="file" id="formFile" accept=".csv">
-                <button class="btn btn-outline-dark" type="button" id="inputGroupFileAddon04">Upload</button>
+                <form method="post" action="/dashboard" enctype="multipart/form-data">
+                <input class="form-control" type="file" name="file" id="formFile" accept=".csv">
+                <button class="btn btn-outline-dark" type="submit" id="inputGroupFileAddon04">Upload</button>
+                </form>
             </div>
         </section>
     

@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash, redirect
+from fileinput import filename
 import pandas as pd
 import plotly.express as px
 from plotly.subplots import make_subplots
@@ -12,10 +13,15 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/company')
+@app.route('/company',  methods = ['GET','POST'])
 def company():
     # trading_view chart of company for its share price value if possible
     company_name = 'AdaniEnterp'
+    if request.method == "POST":
+        _name = request.form['company_name']
+        if _name:
+            company_name = _name
+        
     income_statement, balance_sheet, cash_flow = fetch_data(company_name)
     graphs = []
     income_statement_cols = [' Profit before tax ', ' Net Profit ', ' Sales ']
@@ -66,61 +72,67 @@ def company():
     score = rd.recommend(company_name)
     graphs.append(indicator(score))
 
-    return render_template('company.html', graphs=graphs, company_name=company_name)
+    return render_template('company.html', graphs=graphs, filename=company_name)
 
 
-@app.route("/dashboard")
+@app.route("/dashboard", methods = ['GET','POST'])
 def dashboard():
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            print("No file found");
+            return redirect(request.url)
+        uploaded_file = request.files['file']
+        uploaded_file.save('./data/'+uploaded_file.filename)
 
-    company_name = 'AdaniEnterp'
-    income_statement, balance_sheet, cash_flow = fetch_data(company_name)
-    graphs = []
-    income_statement_cols = [' Profit before tax ', ' Net Profit ', ' Sales ']
-    balance_sheet_cols = [' Other Assets ', ' Other Liabilities ', ' Reserves ']
-    x = ' Report Date '
+        # company_name = 'AdaniEnterp'
+        # income_statement, balance_sheet, cash_flow = fetch_data(company_name)
+        # graphs = []
+        # income_statement_cols = [' Profit before tax ', ' Net Profit ', ' Sales ']
+        # balance_sheet_cols = [' Other Assets ', ' Other Liabilities ', ' Reserves ']
+        # x = ' Report Date '
+        # df = pd.read_csv("./data/"+uploaded_file.filename)
+        # for col in df.columns:
+        #     income_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
-    for col in df.columns:
-        income_statement.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+        # for col in df.columns:
+        #     balance_sheet.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
-    for col in df.columns:
-        balance_sheet.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+        # for col in df.columns:
+        #     cash_flow.rename(columns = {col: ' ' + col + ' '}, inplace = True)
 
-    for col in df.columns:
-        cash_flow.rename(columns = {col: ' ' + col + ' '}, inplace = True)
+        # columns = [' Net Profit ', ' Dividend Amount ', ' Sales ', ' Profit before tax ', ' Equity Share Capital ', 
+        # ' Other Liabilities ', ' No. of Equity Shares ', ' Other Assets ', ' Reserves ', ' Investments ', ' Cash & Bank ']
 
-    columns = [' Net Profit ', ' Dividend Amount ', ' Sales ', ' Profit before tax ', ' Equity Share Capital ', 
-    ' Other Liabilities ', ' No. of Equity Shares ', ' Other Assets ', ' Reserves ', ' Investments ', ' Cash & Bank ']
+        # for i in range(0, len(columns)):
+        #     if i < 4:
+        #         income_statement[columns[i]] = income_statement[columns[i]] * 100000
+        #     else:
+        #         balance_sheet[columns[i]] = balance_sheet[columns[i]] * 100000
 
-    for i in range(0, len(columns)):
-        if i < 4:
-            income_statement[columns[i]] = income_statement[columns[i]] * 100000
-        else:
-            balance_sheet[columns[i]] = balance_sheet[columns[i]] * 100000
+        # earnings_per_share = income_statement[' Net Profit '] / balance_sheet[' Equity Share Capital ']
 
-    earnings_per_share = income_statement[' Net Profit '] / balance_sheet[' Equity Share Capital ']
+        # debt_to_equity_ratio = balance_sheet[' Other Liabilities '] / balance_sheet[' No. of Equity Shares ']
 
-    debt_to_equity_ratio = balance_sheet[' Other Liabilities '] / balance_sheet[' No. of Equity Shares ']
+        # return_on_equity = income_statement[' Net Profit '] / balance_sheet[' No. of Equity Shares ']
 
-    return_on_equity = income_statement[' Net Profit '] / balance_sheet[' No. of Equity Shares ']
+        # graphs.append(line_graph_income_stmnt(income_statement, balance_sheet))
+        # # graphs.append(line_graph_balance_sheet(balance_sheet, company_name))
 
-    graphs.append(line_graph_income_stmnt(income_statement, balance_sheet))
-    # graphs.append(line_graph_balance_sheet(balance_sheet, company_name))
+        # for y_col in income_statement_cols:
+        #     graphs.append(bar_graphs(income_statement, company_name, x, y_col))
 
-    for y_col in income_statement_cols:
-        graphs.append(bar_graphs(income_statement, company_name, x, y_col))
+        # for y_col in balance_sheet_cols:
+        #     graphs.append(bar_graphs(balance_sheet, company_name, x, y_col))
 
-    for y_col in balance_sheet_cols:
-        graphs.append(bar_graphs(balance_sheet, company_name, x, y_col))
+        # ratios = [earnings_per_share, debt_to_equity_ratio, return_on_equity]
+        # ratio_name = ['earnings_per_share', 'debt_to_equity_ratio', 'return_on_equity']
 
-    ratios = [earnings_per_share, debt_to_equity_ratio, return_on_equity]
-    ratio_name = ['earnings_per_share', 'debt_to_equity_ratio', 'return_on_equity']
+        # graphs.append(line_graph_ratios(income_statement, company, ratios, ratio_name))
 
-    graphs.append(line_graph_ratios(income_statement, company, ratios, ratio_name))
+        # score = rd.recommend(company_name)
+        # graphs.append(indicator(score))
 
-    score = rd.recommend(company_name)
-    graphs.append(indicator(score))
-
-    return render_template('company.html', graphs=graphs)
+        return render_template('company.html', filename=uploaded_file.filename)
 
 
 def fetch_data(company_name):
@@ -217,11 +229,6 @@ def indicator(value):
     ))
 
     return fig.to_html()
-
-
-
-
-
 
 
 app.run(debug=True)
