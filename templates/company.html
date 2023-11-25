@@ -5,12 +5,22 @@
 {% block body %}
 
     <!-- Main Content Section -->
+    <!-- Handles the error message-->
+    {%if message != None%} 
+        <div class="alert alert-danger" role="alert">
+            <strong>{{message}}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {%endif%}
+    <!--Company Info-->
     <div class="container-lg text-center mt-5">
         <section class="company-info">
-            <h4>: {{ filename }}</h4>
+            <h4>{{ filename }}</h4>
         </section>
     </div>
-
+    <!--Graphs Plot-->
     <div>
         {%for graph in graphs%} 
             <div>

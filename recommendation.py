@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 
-
+# Counting the values of each year increasing
 def counter_increase(val_before, values):
     count = 0
     for value in values:
@@ -12,7 +12,7 @@ def counter_increase(val_before, values):
 
     return count
 
-
+# Counting the values of each year decreasing
 def counter_decrease(val_before, values):
     count = 0
     for value in values:
@@ -22,7 +22,7 @@ def counter_decrease(val_before, values):
 
     return count
 
-
+# Counting the values increase, decrease of the ratios
 def financial_ratios(ticker):
     files = [f'data/{ticker}_Income_Statement.csv', f'data/{ticker}_Balance_Sheet.csv']
     financial_statement = pd.read_csv(files[0])
@@ -49,7 +49,7 @@ def financial_ratios(ticker):
 
     return counts
 
-
+# Analyzing the income statement file with various columns
 def income_statement_analysis(ticker):
     files = f'data/{ticker}_Income_Statement.csv'
     financial_statement = pd.read_csv(files)
@@ -72,7 +72,7 @@ def income_statement_analysis(ticker):
     return counts
     # if all the counters has more than 7 counts its good    
 
-
+# Analyzing the cash flow file with various columns
 def cash_flow_analysis(ticker):
     files = f'data/{ticker}_Cash_Flow.csv'
     cash_flow_statement = pd.read_csv(files)
@@ -108,7 +108,7 @@ def cash_flow_analysis(ticker):
     counts[1], counts[2] = counts[2], counts[1]
     return counts
 
-
+# Providing the pointer scheme for increase, decrease counter and score for it
 def pointer_scheme(values):
     pointers = {'earning_per_share': [1, 5, 10],
                 'debt_to_equity': [1, 5, 10],
@@ -140,7 +140,7 @@ def pointer_scheme(values):
 
     return total_points
             
-
+# adding the final recommend function which invokes all the sub functions for calculations
 def recommend(ticker):
 
     counts = financial_ratios(ticker)
